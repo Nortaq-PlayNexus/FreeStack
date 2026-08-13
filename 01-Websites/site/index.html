@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Freestack Site</title>
+  <meta name="description" content="A free static site running on Cloudflare Pages." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>FreeStack <span class="live">LIVE</span></h1>
+      <p class="tagline">Hosted free, forever. Cloudflare Pages · no bandwidth cap.</p>
+    </header>
+
+    <section class="cards">
+      <a class="card" href="/healthz">
+        <h2>/healthz</h2>
+        <p>Return <code>{"ok":true}</code> so your free uptime monitor (11) can watch this site.</p>
+      </a>
+      <a class="card" href="/api/hello">
+        <h2>/api/hello</h2>
+        <p>Works only when Pages Functions are enabled — see <code>functions/hello.js</code>.</p>
+      </a>
+      <a class="card" href="https://github.com" target="_blank" rel="noopener">
+        <h2>Deploy from git</h2>
+        <p>Connect this repo to Pages and every push auto-deploys.</p>
+      </a>
+    </section>
+  </main>
+</body>
+</html>

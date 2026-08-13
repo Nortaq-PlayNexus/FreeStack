@@ -1,0 +1,16 @@
+{
+  "name": "api-router",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-01-01",
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  "kv_namespaces": [
+    { "binding": "KVCACHE", "id": "REPLACE_WITH_KV_NAMESPACE_ID" }
+  ],
+  "vars": {
+    "OPENWEATHER_API_KEY": "",
+    "WEATHERAPI_KEY": "",
+    "NEWSAPI_KEY": "",
+    "GNEWS_KEY": ""
+  }
+}

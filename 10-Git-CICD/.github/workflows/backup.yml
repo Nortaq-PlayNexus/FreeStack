@@ -1,0 +1,47 @@
+name: nightly-backup
+
+on:
+  schedule:
+    - cron: "30 2 * * *"       # 02:30 UTC
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install rclone
+        run: curl -sSL https://rclone.org/install.sh | sudo bash
+
+      - name: Configure rclone from secrets
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+        run: |
+          mkdir -p ~/.config/rclone
+          cat > ~/.config/rclone/rclone.conf <<EOF
+          [r2]
+          type = s3
+          provider = Cloudflare
+          access_key_id = $R2_ACCESS_KEY_ID
+          secret_access_key = $R2_SECRET_ACCESS_KEY
+          endpoint = https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com
+          acl = private
+          EOF
+
+      - name: Dump + upload database
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          RCLONE_REMOTE: r2:freestack-backups
+        run: bash 06-Databases/backup.sh
+
+      - name: Alert on failure
+        if: failure()
+        run: |
+          python3 09-Email/send.py "${{ secrets.EMAIL_ALERT_TO }}" \
+            "Backup failed" "<p>Nightly backup did not complete.</p>"
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}

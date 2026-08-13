@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "freestack": {
+      "url": "https://freestack-mcp.<your-subdomain>.workers.dev/mcp",
+      "headers": {
+        "Authorization": "Bearer <MCP_AUTH_TOKEN>"
+      }
+    },
+    "freestack-fastmcp": {
+      "url": "https://freestack-mcp-py.fastmcp.app/mcp"
+    }
+  }
+}

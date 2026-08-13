@@ -1,0 +1,89 @@
+# --- free-only model catalog for the LLM router (05-LLM-AI) ---
+# Each provider block: endpoint, model ids that are free, key env var.
+# Router sends: current provider -> on 429/5xx/timeout -> next provider -> loop.
+
+providers:
+  - id: openrouter
+    name: OpenRouter (free models)
+    base_url: "https://openrouter.ai/api/v1"
+    api_key_env: OPENROUTER_API_KEY
+    models:
+      - "meta-llama/llama-3.3-70b-instruct:free"
+      - "north/code-mini:free"
+      - "nvidia/ling-3.0-flash:free"
+      - "google/gemma-4-31b:free"
+    timeout_s: 60
+
+  - id: groq
+    name: Groq
+    base_url: "https://api.groq.com/openai/v1"
+    api_key_env: GROQ_API_KEY
+    models:
+      - "llama-3.3-70b-versatile"
+      - "deepseek-r1-distill-llama-70b"
+      - "qwen/qwen-qwq-32b"
+    timeout_s: 60
+
+  - id: cerebras
+    name: Cerebras
+    base_url: "https://api.cerebras.net/v1"
+    api_key_env: CEREBRAS_API_KEY
+    models:
+      - "llama-3.3-70b"
+    timeout_s: 60
+
+  - id: gemini
+    name: Google AI Studio
+    base_url: "https://generativelanguage.googleapis.com/v1beta/openai"
+    api_key_env: GEMINI_API_KEY
+    models:
+      - "gemini-3-flash"
+      - "gemini-3.5-flash-lite"
+      - "gemma-3-27b-it"
+    timeout_s: 60
+
+  - id: mistral
+    name: Mistral La Plateforme
+    base_url: "https://api.mistral.ai/v1"
+    api_key_env: MISTRAL_API_KEY
+    models:
+      - "open-mistral-nemo"
+    timeout_s: 60
+
+  - id: cloudflare
+    name: Cloudflare Workers AI
+    base_url: "https://api.cloudflare.com/client/v4/accounts/{CF_ACCOUNT_ID}/ai/v1/openai"
+    api_key_env: CLOUDFLARE_API_TOKEN
+    models:
+      - "@cf/meta/llama-4-scout-17b-16e-instruct"
+    timeout_s: 60
+
+  - id: kilo
+    name: Kilo Gateway (no key)
+    base_url: "https://kilo.ai/api/v1"
+    api_key_env: KILO_API_KEY
+    models: [ "openai/auto" ]
+    timeout_s: 60
+
+# --- free API catalog used by the worker router (04-APIs) ---
+api_catalog:
+  weather:
+    open_meteo:        { base: "https://api.open-meteo.com/v1",          key: null }
+    openweathermap:    { base: "https://api.openweathermap.org/data/2.5", key: "OPENWEATHER_API_KEY" }
+    weatherapi:        { base: "https://api.weatherapi.com/v1",          key: "WEATHERAPI_KEY" }
+  crypto:
+    coingecko:         { base: "https://api.coingecko.com/api/v3",       key: null }
+    coincap:           { base: "https://rest.coincap.io/v3",             key: null }
+  fx:
+    frankfurter:       { base: "https://api.frankfurter.app",            key: null }
+    exchangerate:      { base: "https://open.er-api.com/v6",             key: null }
+  geo:
+    ipapi:             { base: "http://ip-api.com/json",                 key: null }
+    nominatim:         { base: "https://nominatim.openstreetmap.org",    key: null }
+  data:
+    restcountries:     { base: "https://restcountries.com/v3.1",         key: null }
+    wikipedia:         { base: "https://en.wikipedia.org/api/rest_v1",   key: null }
+    hackernews:        { base: "https://hacker-news.firebaseio.com/v0",  key: null }
+  news:
+    newsapi:           { base: "https://newsapi.org/v2",                 key: "NEWSAPI_KEY" }
+    gnews:             { base: "https://gnews.io/api/v4",                key: "GNEWS_KEY" }

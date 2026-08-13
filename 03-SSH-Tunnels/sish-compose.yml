@@ -1,0 +1,40 @@
+# sish-compose.yml - self-hosted ngrok/serveo replacement (own tunnel endpoint, unlimited).
+# Run on your free always-on VM (07):  docker compose -f sish-compose.yml up -d
+# Point *.YOUR_DOMAIN at the VM, then from anywhere:
+#   ssh -p 2222 -R 80:localhost:8080 YOUR_DOMAIN
+#
+# Uses antoniomika/sish (open source, MIT-ish). Docs: github.com/antoniomika/sish
+services:
+  sish:
+    image: antoniomika/sish:latest
+    container_name: sish
+    restart: unless-stopped
+    network_mode: host
+    command: >
+      --ssh-address=:2222
+      --http-address=:80
+      --https-address=:443
+      --https=true
+      --https-certificate-directory=/ssl
+      --private-keys-directory=/keys
+      --authentication-keys-directory=/pubkeys
+      --domain=${DOMAIN:?set DOMAIN in .env}
+      --bind-random-ports=false
+      --load-balancing=true
+    volumes:
+      - ./ssl:/ssl
+      - ./keys:/keys
+      - ./pubkeys:/pubkeys
+
+  # (optional) free keep-alive + dashboard watch
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: kuma
+    restart: unless-stopped
+    volumes:
+      - kuma-data:/app/data
+    environment:
+      UPTIME_KUMA_PORT: "3001"
+
+volumes:
+  kuma-data:

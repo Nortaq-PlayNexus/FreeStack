@@ -1,0 +1,18 @@
+# rclone.conf.example - copy to ~/.config/rclone/rclone.conf and fill values.
+# Or run rclone-setup.sh which generates this from your ../.env automatically.
+
+# Cloudflare R2 (S3-compatible, zero egress)
+[r2]
+type = s3
+provider = Cloudflare
+access_key_id = <R2_ACCESS_KEY_ID>
+secret_access_key = <R2_SECRET_ACCESS_KEY>
+endpoint = https://<R2_ACCOUNT_ID>.r2.cloudflarestorage.com
+acl = private
+
+# Backblaze B2 (second copy)
+[b2]
+type = b2
+account = <B2_KEY_ID>
+key = <B2_APP_KEY>
+hard_delete = false

@@ -1,0 +1,39 @@
+name: daily-check
+
+on:
+  schedule:
+    - cron: "0 * * * *"         # every hour
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check services
+        id: check
+        env:
+          SITES: |
+            https://freestack.pages.dev
+            https://freestack.workers.dev
+            https://freestack.onrender.com
+        run: |
+          set +e
+          failures=""
+          for url in $SITES; do
+            if ! curl -fsS --max-time 15 "$url" >/dev/null 2>&1; then
+              failures="$failures $url"
+            fi
+          done
+          echo "failures=$failures" >> "$GITHUB_OUTPUT"
+          [ -z "$failures" ] && echo "ALL UP" || echo "DOWN:$failures"
+          exit 0
+
+      - name: Email alert if anything is down
+        if: steps.check.outputs.failures != ''
+        run: |
+          python3 09-Email/send.py "${{ secrets.EMAIL_ALERT_TO }}" \
+            "Service DOWN: ${{ steps.check.outputs.failures }}" \
+            "<p>These services are unreachable: <code>${{ steps.check.outputs.failures }}</code></p>"
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}

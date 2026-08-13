@@ -1,0 +1,35 @@
+# postgres-compose.yml - self-hosted Postgres 16 + pgadmin on the free VM (07).
+# Unlimited DB, owned by you. Back it up with backup.sh (DATABASE_URL=postgres://...).
+# Usage: on the VM:  docker compose -f postgres-compose.yml up -d
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: freestack-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER:-freestack}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:?set PG_PASSWORD in .env}
+      POSTGRES_DB: ${PG_DB:-freestack}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"   # localhost only; tunnel in from outside (03)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER:-freestack}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer:latest
+    container_name: freestack-adminer
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

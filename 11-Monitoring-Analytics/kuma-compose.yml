@@ -1,0 +1,15 @@
+# kuma-compose.yml - Uptime Kuma, self-hosted, on the free VM (07).
+# Full monitoring + status page + 90 notification channels. Point it at everything.
+# Usage:  docker compose -f kuma-compose.yml up -d
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: unless-stopped
+    volumes:
+      - kuma-data:/app/data
+    ports:
+      - "127.0.0.1:3001:3001"   # SSH-tunnel in (03) or put behind Caddy/Nginx
+
+volumes:
+  kuma-data:

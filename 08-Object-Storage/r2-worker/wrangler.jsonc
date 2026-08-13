@@ -1,0 +1,11 @@
+{
+  "name": "r2-worker",
+  "main": "src/index.js",
+  "compatibility_date": "2025-04-01",
+  "r2_buckets": [
+    { "binding": "BUCKET", "bucket_name": "freestack-backups" }
+  ],
+  "vars": {
+    "OBJECT_TOKEN": "REPLACE_WITH_LONG_RANDOM_SECRET"
+  }
+}

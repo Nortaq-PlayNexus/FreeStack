@@ -1,0 +1,18 @@
+# ~/.ssh/config additions - one-word aliases for common tunnel operations
+# With your own sish server (03) or Cloudflare Access TCP (03), add:
+
+Host sish
+  HostName yourname.is-a.dev
+  Port 2222
+  User root
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
+
+# Instant public tunnel to your local web app (localhost.run)
+Host localhost.run
+  HostName localhost.run
+  User nokey
+  StrictHostKeyChecking no
+
+# Expose localhost:8080 publicly through your own sish server:
+#   ssh -N -p 2222 -R 80:localhost:8080 root@yourname.is-a.dev

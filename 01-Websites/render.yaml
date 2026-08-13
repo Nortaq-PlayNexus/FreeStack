@@ -1,0 +1,16 @@
+# render.yaml - Blueprint for a free Render web service.
+# Paste into Render dashboard: New -> Blueprint -> this repo. Or apply via render CLI.
+# Free tier: 750 hrs/mo, spins down after 15 min idle. No credit card for free services.
+services:
+  - type: web
+    name: freestack-app
+    runtime: docker
+    repo: https://github.com/REPLACE_YOU/freestack
+    plan: free
+    dockerfilePath: 01-Websites/Dockerfile
+    envVars:
+      - key: RESEND_API_KEY
+        sync: false          # set in dashboard, never in git
+      - key: NEON_DATABASE_URL
+        sync: false
+    healthCheckPath: /healthz

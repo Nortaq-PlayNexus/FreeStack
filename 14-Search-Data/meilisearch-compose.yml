@@ -1,0 +1,18 @@
+# meilisearch-compose.yml - fast, typo-tolerant full-text search. Self-hosted = free forever.
+# Only needs ~300MB RAM -> perfect for the Oracle A1 VM. Web UI at port 7700.
+# Usage:  docker compose -f meilisearch-compose.yml up -d
+services:
+  meilisearch:
+    image: getmeili/meilisearch:v1.11
+    container_name: meilisearch
+    restart: unless-stopped
+    environment:
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-devkeychangeit}
+      MEILI_NO_ANALYTICS: "true"
+    ports:
+      - "127.0.0.1:7700:7700"   # expose via SSH tunnel (03), not public
+    volumes:
+      - meili-data:/meili_data
+
+volumes:
+  meili-data:

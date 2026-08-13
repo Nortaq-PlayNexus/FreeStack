@@ -1,0 +1,20 @@
+# crontab.example - the cron lines the free stack needs.
+# Install:  crontab crontab.example
+# Adjust paths (FREESTACK=~/freestack) and choose which to keep.
+
+# FREESTACK=~/freestack
+
+# keep free databases awake (06) - daily 06:05
+# 5 6 * * *  python3 $FREESTACK/06-Databases/keepalive.py >> $FREESTACK/logs/keepalive.log 2>&1
+
+# nightly database backup to R2 (06 + 08) - daily 02:30
+# 30 2 * * * bash $FREESTACK/06-Databases/backup.sh >> $FREESTACK/logs/backup.log 2>&1
+
+# dead-man-switch ping so Healthchecks knows the VM is alive (11) - every 30 min
+# */30 * * * * python3 $FREESTACK/11-Monitoring-Analytics/healthchecks.py --success
+
+# dynamic DNS for a home/VM box without static IP (12) - every 5 min
+# */5 * * * * bash $FREESTACK/12-Domains-DNS/duckdns.sh >> $FREESTACK/logs/duckdns.log 2>&1
+
+# send daily summary email (09)
+# 0 8 * * * python3 $FREESTACK/09-Email/send.py you@example.com "Daily summary" "<p>All good.</p>"

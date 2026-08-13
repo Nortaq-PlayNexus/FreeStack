@@ -1,0 +1,23 @@
+name = "freestack-api"
+main = "src/index.ts"
+compatibility_date = "2025-04-01"
+
+# Free plan: 100k req/day, 10M KV reads, 5GB D1, 10GB R2, 500k cron/mo
+[[d1_databases]]
+binding = "DB"
+database_name = "freestack-d1"
+database_id = "SET_ME_BY_SETUP"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "SET_ME_BY_SETUP"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "freestack-files"
+
+[vars]
+API_TOKEN = "REPLACE_WITH_A_LONG_RANDOM_SECRET"
+
+[triggers]
+crons = ["0 6 * * *"]

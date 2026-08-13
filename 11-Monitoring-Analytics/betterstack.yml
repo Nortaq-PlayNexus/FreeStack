@@ -1,0 +1,24 @@
+# betterstack.yml - monitors for Better Stack Uptime (free: 10 monitors).
+# Fill <YOUR>.workers.dev etc. with your actual URLs, then:
+#   python3 betterstack-deploy.py
+monitors:
+  - name: Static site
+    url: https://freestack.pages.dev
+    check_interval: 60
+    expected_status: 200
+  - name: API router
+    url: https://freestack.workers.dev/healthz
+    check_interval: 60
+  - name: R2 worker
+    url: https://r2-worker.<you>.workers.dev/healthz
+    check_interval: 60
+  - name: Render app
+    url: https://freestack.onrender.com/healthz
+    check_interval: 60
+  - name: Oracle VM (port 22)
+    url: <oracle-public-ip>
+    check_interval: 60
+    port: 22
+  - name: Ollama
+    url: http://<oracle-ip>:11434/api/tags
+    check_interval: 60
