@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  repo-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify required files
+        run: |
+          test -f README.md && echo "README present" || { echo "Missing README.md"; exit 1; }
+          test -f LICENSE && echo "LICENSE present" || { echo "Missing LICENSE"; exit 1; }
+      - name: README sanity check
+        run: |
+          lines=$(wc -l < README.md | tr -d ' ')
+          if [ "$lines" -lt 5 ]; then
+            echo "README too short ($lines lines)"; exit 1
+          fi
+          echo "README has $lines lines - OK"
