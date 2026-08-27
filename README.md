@@ -33,7 +33,7 @@ Everything here is a self-contained "run it free" kit: a researched `FRAMEWORK.m
 15-Meta-Framework      Whole-stack bootstrap + free-tier audit
 ```
 
-## Features
+\n---\n\n## Screenshots\n\n| Preview | Description |\n|---------|-------------|\n| ![screenshot](docs/screenshots/screenshot.png) | Main interface |\n| ![screenshot](docs/screenshots/demo.gif) | Demo |\n\n*Screenshots coming soon — placeholders auto-generated. Replace docs/screenshots/ with real captures.*\n\n## Features
 
 - **~150 free services cataloged** (`00-MasterList`) with the free tier that actually works.
 - **Multi-provider LLM failover router** (`05-LLM-AI`) — hits OpenRouter → Groq → Cerebras → Gemini → Mistral on 429/timeout, zero cost.
