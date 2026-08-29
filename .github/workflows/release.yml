@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r requirements.txt -r requirements-dev.txt
+          uv pip install -e .
+
+      - name: Run tests
+        run: |
+          FREESTACK_DATABASE_URL=postgresql+asyncpg://freestack:freestack@localhost:5432/freestack_test \
+          FREESTACK_REDIS_URL=redis://localhost:6379/1 \
+          FREESTACK_AUTH__SECRET_KEY=test-secret-key-for-testing-only \
+          pytest tests/ -v
+
+      - name: Build package
+        run: |
+          uv pip install build
+          python -m build
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          files: dist/*
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}

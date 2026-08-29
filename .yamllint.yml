@@ -1,0 +1,60 @@
+extends: default
+
+rules:
+  line-length:
+    max: 120
+    level: warning
+  document-start:
+    present: true
+    level: warning
+  document-end:
+    present: true
+    level: warning
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 1
+  trailing-spaces:
+    level: error
+  indentation:
+    spaces: 2
+    indent-sequences: true
+  key-duplicates:
+    level: error
+  brackets:
+    level: error
+  colons:
+    level: error
+  commas:
+    level: error
+  comments:
+    level: warning
+  comments-indentation:
+    level: warning
+  braces:
+    level: error
+  truthy:
+    allowed-values: ["true", "false", "on", "off", "yes", "no"]
+    level: error
+
+ignore: |
+  .venv
+  venv
+  env
+  __pycache__
+  .mypy_cache
+  .pytest_cache
+  .ruff_cache
+  build
+  dist
+  *.egg-info
+  htmlcov
+  .coverage
+  node_modules
+  .idea
+  .vscode
+  logs
+  data
+  uploads
+  tmp
+  temp

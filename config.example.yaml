@@ -1,0 +1,176 @@
+# FreeStack Configuration Example
+# Copy this file to config.yaml and customize for your environment
+# All values can be overridden via environment variables (prefix: FREESTACK_)
+
+app:
+  name: "freestack"
+  environment: "development"  # development | staging | production
+  debug: true
+  timezone: "UTC"
+
+database:
+  url: "postgresql+asyncpg://freestack:freestack@localhost:5432/freestack"
+  pool_size: 20
+  max_overflow: 10
+  pool_timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+  echo: false
+  echo_pool: false
+
+redis:
+  url: "redis://localhost:6379/0"
+  max_connections: 50
+  socket_timeout: 5
+  socket_connect_timeout: 5
+  retry_on_timeout: true
+  health_check_interval: 30
+
+auth:
+  secret_key: "CHANGE_THIS_IN_PRODUCTION_USE_OPENSSL_RAND_HEX_32"
+  algorithm: "HS256"
+  access_token_expire_minutes: 30
+  refresh_token_expire_days: 7
+  password_min_length: 12
+  password_require_uppercase: true
+  password_require_lowercase: true
+  password_require_numbers: true
+  password_require_symbols: true
+  bcrypt_rounds: 12
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  worker_class: "uvicorn.workers.UvicornWorker"
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:5173"
+  cors_allow_credentials: true
+  cors_allow_methods:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "PATCH"
+    - "DELETE"
+    - "OPTIONS"
+  cors_allow_headers:
+    - "*"
+  rate_limit: "100/minute"
+  rate_limit_storage: "redis"
+  request_timeout: 30
+  max_request_size: 10485760  # 10MB
+  docs_url: "/docs"
+  redoc_url: "/redoc"
+  openapi_url: "/openapi.json"
+
+cli:
+  theme: "dark"
+  show_progress: true
+  confirm_destructive: true
+  history_file: "~/.freestack_history"
+  completion: true
+
+logging:
+  level: "INFO"
+  format: "json"  # json | console
+  file: "logs/app.log"
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
+  encoding: "utf-8"
+  include_timestamp: true
+  include_level: true
+  include_logger: true
+  include_module: true
+  include_function: true
+  include_line: true
+
+worker:
+  concurrency: 4
+  max_jobs: 1000
+  job_timeout: 300
+  retry_attempts: 3
+  retry_backoff: 60
+  dead_letter_queue: true
+  queues:
+    - "default"
+    - "high"
+    - "low"
+
+scheduler:
+  enabled: true
+  timezone: "UTC"
+  max_instances: 3
+  coalesce: true
+  misfire_grace_time: 30
+
+websocket:
+  host: "0.0.0.0"
+  port: 8001
+  ping_interval: 20
+  ping_timeout: 10
+  max_message_size: 1048576
+  max_connections: 10000
+
+storage:
+  provider: "local"  # local | s3 | gcs | azure
+  local:
+    root: "data/uploads"
+    base_url: "/uploads"
+  s3:
+    bucket: ""
+    region: "us-east-1"
+    endpoint_url: ""
+    access_key: ""
+    secret_key: ""
+    prefix: "uploads/"
+
+email:
+  enabled: false
+  provider: "smtp"  # smtp | sendgrid | mailgun | ses
+  smtp:
+    host: "localhost"
+    port: 587
+    username: ""
+    password: ""
+    use_tls: true
+    use_ssl: false
+  from_address: "noreply@freestack.local"
+  from_name: "FreeStack"
+
+webhooks:
+  enabled: false
+  secret: ""
+  timeout: 10
+  max_retries: 3
+  retry_backoff: 5
+
+metrics:
+  enabled: true
+  path: "/metrics"
+  port: 9090
+
+tracing:
+  enabled: false
+  service_name: "freestack"
+  exporter: "otlp"  # otlp | jaeger | zipkin | console
+  otlp:
+    endpoint: "http://localhost:4317"
+    headers: {}
+  sample_rate: 1.0
+
+security:
+  headers:
+    x_content_type_options: "nosniff"
+    x_frame_options: "DENY"
+    x_xss_protection: "1; mode=block"
+    strict_transport_security: "max-age=31536000; includeSubDomains"
+    content_security_policy: "default-src 'self'"
+    referrer_policy: "strict-origin-when-cross-origin"
+    permissions_policy: "geolocation=(), microphone=(), camera=()"
+  cors:
+    allow_origins: []
+    allow_methods: []
+    allow_headers: []
+    allow_credentials: false
+    max_age: 600

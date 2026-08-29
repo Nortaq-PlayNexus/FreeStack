@@ -1,0 +1,121 @@
+repos:
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+
+  # Ruff - Fast Python linter/formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.0
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # Black - Code formatter (fallback if ruff-format fails)
+  - repo: https://github.com/psf/black
+    rev: 24.3.0
+    hooks:
+      - id: black
+        args: [--check, --diff]
+
+  # isort - Import sorter
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: [--check-only, --diff]
+
+  # MyPy - Static type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [
+          "types-requests>=2.31.0",
+          "types-python-dateutil>=2.9.0",
+          "types-pyyaml>=6.0.12",
+          "pydantic>=2.7.0",
+          "fastapi>=0.111.0",
+          "sqlalchemy>=2.0.30",
+        ]
+        args: [--strict, --show-error-codes]
+
+  # Bandit - Security linting
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.8
+    hooks:
+      - id: bandit
+        args: [-r, --skip, B101,B601, -x, tests, -x, scripts]
+
+  # pip-audit - Dependency vulnerability scanning
+  - repo: https://github.com/pypa/pip-audit
+    rev: v2.7.0
+    hooks:
+      - id: pip-audit
+        args: [--desc, --format=json, --output=pip-audit-report.json]
+        verbose: true
+
+  # Check for license headers
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      - id: check-license-header
+        args: [
+          --license-file, LICENSE-HEADER.txt,
+          --exclude, "tests/|scripts/|docs/|config/|migrations/|alembic/"
+        ]
+
+  # Commit message linting
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.18.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+
+  # Secret detection
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.80.0
+    hooks:
+      - id: trufflehog
+        args: [--no-verification, --json]
+
+  # Dockerfile linting
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        args: [--failure-threshold=error]
+
+  # Markdown linting
+  - repo: https://github.com/markdownlint/markdownlint
+    rev: v0.13.0
+    hooks:
+      - id: markdownlint
+        args: [--disable, MD013, --disable, MD033]
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-c, .yamllint.yml]
+
+ci:
+  autofix_commit_msg: "chore: apply pre-commit auto-fixes"
+  autofix_prs: true
+  autoupdate_branch: ""
+  autoupdate_commit_msg: "chore: update pre-commit hooks"
+  autoupdate_schedule: "weekly"
+  skip: []
+  submodules: false
