@@ -1,10 +1,11 @@
 site_name: FreeStack Documentation
 site_description: A production-grade, modular full-stack development framework
 site_author: FreeStack Contributors
-site_url: https://docs.freestack.dev
-repo_url: https://github.com/yourorg/freestack
-repo_name: yourorg/freestack
+site_url: https://nortaq-playnexus.github.io/FreeStack/
+repo_url: https://github.com/Nortaq-PlayNexus/FreeStack
+repo_name: Nortaq-PlayNexus/FreeStack
 edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2026 FreeStack Contributors
 
 theme:
   name: material
@@ -22,48 +23,25 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
-    - navigation.tabs
     - navigation.sections
-    - navigation.expand
     - navigation.top
     - search.highlight
     - search.share
     - content.code.copy
-    - content.code.annotate
-    - content.tabs.link
 
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - Architecture:
       - Overview: architecture/overview.md
-      - Database: architecture/database.md
-      - Authentication: architecture/authentication.md
-      - Events: architecture/events.md
-      - WebSocket: architecture/websocket.md
-  - API Reference:
-      - Overview: api/reference.md
-      - Authentication: api/authentication.md
-      - Users: api/users.md
-      - Health: api/health.md
-  - CLI Reference:
-      - Overview: cli/reference.md
-      - Database: cli/database.md
-      - API: cli/api.md
-      - Worker: cli/worker.md
   - Guides:
-      - Deployment: guides/deployment.md
       - Development: guides/development.md
-      - Testing: guides/testing.md
+      - Deployment: guides/deployment.md
       - Configuration: guides/configuration.md
       - Security: guides/security.md
 
 plugins:
   - search
-  - autorefs
-  - git-revision-date-localized:
-      enable_creation_date: true
-      type: date
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -73,25 +51,9 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
-  - pymdownx.tabbed:
-      alternate_style: true
   - pymdownx.details
   - admonition
   - attr_list
   - md_in_html
   - toc:
       permalink: true
-
-extra:
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/yourorg/freestack
-    - icon: fontawesome/brands/discord
-      link: https://discord.gg/freestack
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/freestack
-  analytics:
-    provider: google
-    property: G-XXXXXXXXXX
-
-copyright: Copyright &copy; 2024 FreeStack Contributors

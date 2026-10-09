@@ -18,28 +18,20 @@ docs/
 ├── index.md                 # This file
 ├── getting-started.md       # Quick start guide
 ├── architecture/            # Architecture documentation
-│   ├── overview.md
-│   ├── database.md
-│   ├── authentication.md
-│   ├── events.md
-│   └── websocket.md
+│   └── overview.md
 ├── api/                     # API documentation
-│   ├── reference.md
-│   ├── authentication.md
-│   ├── users.md
-│   └── health.md
+│   └── reference.md         # Placeholder — not yet written
 ├── cli/                     # CLI documentation
-│   ├── reference.md
-│   ├── database.md
-│   ├── api.md
-│   └── worker.md
+│   └── reference.md         # Placeholder — not yet written
 └── guides/                  # How-to guides
     ├── deployment.md
     ├── development.md
-    ├── testing.md
     ├── configuration.md
     └── security.md
 ```
+
+Only pages that exist are listed. `database`, `authentication`, `events`, `websocket`,
+`testing` and the per-endpoint API and CLI pages are planned but not written yet.
 
 ## Building Documentation
 
@@ -56,4 +48,4 @@ mkdocs build
 
 ## Contributing
 
-Documentation is written in Markdown and built with MkDocs Material. See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+Documentation is written in Markdown and built with MkDocs Material. See [CONTRIBUTING.md](https://github.com/Nortaq-PlayNexus/FreeStack/blob/main/CONTRIBUTING.md) for guidelines.
